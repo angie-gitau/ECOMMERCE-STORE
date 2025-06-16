@@ -15,12 +15,21 @@ const services = () => {
   cron.schedule("* * * * *", () => {
     sendWelcomeMail();
     sendPendingOrderEmail();
+    sendDeliveredOrderEmail();
+  });
+};
+
+const promotion = () => {
+  cron.schedule("30 5 * * 5", () => {
+
+    // SENDING PROMOTION EMAIL
   });
 };
 
 services();
+promotion();
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Background services is running on port ${PORT}`);
   dbConnection();
 });
