@@ -25,7 +25,6 @@ const sendPromotionEmail = async () => {
 
         try {
           await sendMail(messageOptions);
-          await order.findByIdAndUpdate(order._id, { $set: { status: 1 } });
         } catch (error) {
           console.log(error);
         }
