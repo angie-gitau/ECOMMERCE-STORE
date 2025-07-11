@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 const OrderSchema = mongoose.Schema(
   {
+
+//expected data types
+
+
     name: {
       type: String,
       require: true,

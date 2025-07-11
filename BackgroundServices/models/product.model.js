@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 const ProductSchema = mongoose.Schema({
+
+  //expected data types
+
   title: {
     type: String,
     require: true

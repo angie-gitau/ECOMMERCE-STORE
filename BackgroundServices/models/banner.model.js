@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 const BannerSchema = mongoose.Schema(
   {
+
+//expected data types
+
+
     title: {
       type: String,
       require: true,

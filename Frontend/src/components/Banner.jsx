@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 
 const Banner = () => {
   return (
-    <div className="relative bg-[url('/beautybanner2.jpg')] bg-no-repeat bg-cover h-[80vh] px-[200px]">
+    <div className="relative bg-[url('/banner1.jpg')] bg-no-repeat bg-cover h-[80vh] px-[200px]">
       <div className="absolute inset-0 bg-black opacity-20"></div>
       <div className="relative flex flex-col text-white w-[50%] pt-[10%]">
         <span className="text-[30px] mt-3">

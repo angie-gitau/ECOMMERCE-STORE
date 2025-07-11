@@ -6,7 +6,7 @@ const Product = () => {
       {/**LEFT SIDE**/}
       <div className="flex-1 h-[500px] w-[600px]">
         <img
-          src="/lotion2.jpg"
+          src="/cement.jpg"
           alt=""
           className="h-[100%] w-[100%]object-cover"
         />

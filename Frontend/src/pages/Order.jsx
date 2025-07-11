@@ -18,7 +18,7 @@ const Order = () => {
               <div className="flex flex-col">
                 <div className="flex items-center justify-evenly border-b border-gray-200 pb-4">
                   <img
-                    src="/lotion.jpg"
+                    src="/cement.jpg"
                     alt=""
                     className="w-24 h-24 rounded-md object-cover"
                   />
@@ -60,7 +60,7 @@ const Order = () => {
               <div className="flex flex-col">
                 <div className="flex items-center justify-evenly border-b border-gray-200 pb-4">
                   <img
-                    src="/lotion.jpg"
+                    src="/cement.jpg"
                     alt=""
                     className="w-24 h-24 rounded-md object-cover"
                   />

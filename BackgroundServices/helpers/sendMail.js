@@ -1,6 +1,6 @@
-import nodemailer from "nodemailer";
+import nodemailer from "nodemailer"; //in e module
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config();            // allows the loading of the contents of dotenv file into process.env
 
 function createTransporter(config) {
   const transporter = nodemailer.createTransport(config);
