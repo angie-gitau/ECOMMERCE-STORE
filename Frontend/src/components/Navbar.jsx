@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className="flex items-center justify-between h-[100px] shadow-md px-6">
       <Link to="/">
         <div className="cursor-pointer m-2">
-          <img src="/blisslogo1.png" alt="" height="200px" width="200px" />
+          <img src="/logo1.jpg" alt="" height="200px" width="200px" />
         </div>
       </Link>
       <div className="flex items-center m-2">

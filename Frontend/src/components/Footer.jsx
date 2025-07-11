@@ -4,7 +4,7 @@ const Footer = () => {
       {/**UPPER PART**/}
       <div className="flex justify-between py-[5%]">
         <div>
-          <img src="/blisslogo1.png" alt="" height={200} width={200} />
+          <img src="/logo1.jpg" alt="" height={200} width={200} />
           <p className="mt-2"> LET'S MAKE YOU GROW</p>
         </div>
 

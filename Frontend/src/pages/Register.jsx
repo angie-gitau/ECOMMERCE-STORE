@@ -7,7 +7,7 @@ const Register = () => {
         {/*IMAGE */}
         <div className="h-[500px] w-[500px] transition-transform duration-700 ease-in-out transform hover:scale-105">
           <img
-            src="/lotion1.jpg"
+            src="/cement.jpg"
             alt="login"
             className="object-cover h-full w-full"
           />

@@ -11,7 +11,7 @@ const Cart = () => {
           <div className="flex flex-col space-y-4">
             <div className="flex items-center justify-between border-b border-gray-200 pb-4">
               <img
-                src="/lotion1.jpg"
+                src="/cement.jpg"
                 alt=""
                 className="w-32 h-32 object-cover rounded-md"
               />
@@ -31,7 +31,7 @@ const Cart = () => {
             </div>
             <div className="flex items-center justify-between border-b border-gray-200 pb-4">
               <img
-                src="/lotion1.jpg"
+                src="/cement.jpg"
                 alt=""
                 className="w-32 h-32 object-cover rounded-md"
               />
@@ -51,7 +51,7 @@ const Cart = () => {
             </div>
             <div className="flex items-center justify-between border-b border-gray-200 pb-4">
               <img
-                src="/lotion1.jpg"
+                src="/cement.jpg"
                 alt=""
                 className="w-32 h-32 object-cover rounded-md"
               />
