@@ -3,22 +3,25 @@ import Menu  from "./components/Menu";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
 import Products from "./pages/Products";
+import Orders from "./pages/Orders";
+import Banners from "./pages/Banners";
 
 
 
 function App () {
     const Layout = () => {
-      return (
-      <div className="flex">
-        <div>
-          <Menu />
-        </div>
-        <div>
-          <Outlet />
-        </div>
+  return (
+    <div className="flex">
+      <div>
+        <Menu />
       </div>
-    );
-  };
+      <div className="flex-1">
+        <Outlet />
+      </div>
+    </div>
+  );
+};
+
 
     const router = createBrowserRouter([
     {
@@ -37,6 +40,14 @@ function App () {
           path: "/products",
           element: <Products />,
         },
+        {
+          path: "/orders",
+          element: <Orders />,
+        },
+        {
+          path: "/banners",
+          element: <Banners />,
+        }
       ],
     },
   ]);
