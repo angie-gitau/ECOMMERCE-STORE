@@ -44,27 +44,33 @@ const Banners = () => {
         <span htmlFor="" className="font-semibold">
           Image:
         </span>
-        <div className="flex-1 bg-white p-5">
-          <div className="flex flex-col">
-            <div className="border-2 h-[100px] w-[100px] border-[#444] border-solid rounded-md">
-              <div className="flex items-center justify-center mt-[40px]">
-                <label htmlFor="file" className="cursor-pointer">
-                  <FaPlus className="text-[20px]" />
-                </label>
-              </div>
-            </div>
-
-            <div className='flex flex-col my-3'>
-              <span className='font-semibold'>Title:</span>
-              <input type="text" className='w-[250px] outline-none border-b-2 border-[#444] border-solid' onChange={(e) => setTitle(e.target.value)}/>
-            </div>
-            <div className='flex flex-col my-3'>
-              <span className='font-semibold'>Subtitle:</span>
-              <input type="text" className='w-[250px] outline-none border-b-2 border-[#444] border-solid' onChange={(e) => setTitle(e.target.value)}/>
-            </div>
-            <button className="bg-[#1e1e1e] p-2 text-[#ffffff] font-semibold cursor-pointer">Upload</button>
+        <div className="border-2 h-[100px] w-[100px] border-[#444] border-solid rounded-md">
+          <div className="flex items-center justify-center mt-[40px]">
+            <label htmlFor="file" className="cursor-pointer">
+              <FaPlus className="text-[20px]" />
+            </label>
           </div>
         </div>
+
+        <div className="flex flex-col my-3">
+          <span className="font-semibold">Title:</span>
+          <input
+            type="text"
+            className="w-[250px] outline-none border-b-2 border-[#444] border-solid"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col my-3">
+          <span className="font-semibold">Subtitle:</span>
+          <input
+            type="text"
+            className="w-[250px] outline-none border-b-2 border-[#444] border-solid"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <button className="bg-[#1e1e1e] p-2 text-[#ffffff] font-semibold cursor-pointer">
+          Upload
+        </button>
       </div>
     </div>
   );
