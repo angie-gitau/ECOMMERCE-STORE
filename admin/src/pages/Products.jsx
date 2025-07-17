@@ -1,73 +1,25 @@
 import {DataGrid} from '@mui/x-data-grid';
 import {FaTrash} from "react-icons/fa"
 import {Link} from "react-router-dom"
+import { userRequest } from "../requestMethods";
+import { useEffect, useState } from 'react';
 
 const Products = () => {
-  const data = [
-  {
-    _id: "101",
-    title: "Cement",
-    img:"",
-    desc:"build",
-    originalPrice: 500.0,
-    discountedPrice: 450.0,
-    inStock: true,
-   },
-   {
-    _id: "102",
-    title: "Cement",
-    img:"",
-    desc:"build",
-    originalPrice: 500.0,
-    discountedPrice: 450.0,
-    inStock: true,
-   },
-   {
-    _id: "103",
-    title: "Cement",
-    img:"",
-    desc:"build",
-    originalPrice: 500.0,
-    discountedPrice: 450.0,
-    inStock: true,
-   },
-   {
-    _id: "104",
-    title: "Cement",
-    img:"",
-    desc:"build",
-    originalPrice: 500.0,
-    discountedPrice: 450.0,
-    inStock: true,
-   },
-   {
-    _id: "105",
-    title: "Cement",
-    img:"",
-    desc:"build",
-    originalPrice: 500.0,
-    discountedPrice: 450.0,
-    inStock: true,
-   },
-   {
-    _id: "106",
-    title: "Cement",
-    img:"",
-    desc:"build",
-    originalPrice: 500.0,
-    discountedPrice: 450.0,
-    inStock: true,
-   },
-   {
-    _id: "107",
-    title: "Cement",
-    img:"",
-    desc:"build",
-    originalPrice: 500.0,
-    discountedPrice: 450.0,
-    inStock: true,
-   },
-];
+
+   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await userRequest.get("/products");
+        setProducts(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProducts();
+  }, []);
+
 
 const columns = [
   {field: "_id", headerName: "ID", width: 90},
@@ -127,12 +79,14 @@ const columns = [
     <div className="p-5 w-[70vw]">
       <div className="flex items-center justify-between m-[30px]">
         <h1 className="m-[20px] text-[20px]">All Products</h1>
+       <Link to="/newproduct">
         <button className="bg-[#1e1e1e] p-[10px] font-semibold text-[#ffffff]  cursor-pointer">
           Create
         </button>
+       </Link>
       </div>
       <div className='m-[30px]'>
-      <DataGrid getRowId={(row) => row._id} rows={data} checkboxSelection columns={columns} />
+      <DataGrid getRowId={(row) => row._id} rows={products} checkboxSelection columns={columns} />
       </div>
 
     </div>
