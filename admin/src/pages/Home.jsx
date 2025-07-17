@@ -2,96 +2,88 @@ import { LineChart } from "@mui/x-charts/LineChart";
 
 const Home = () => {
   return (
-    <div className="flex justify-between h-screen p-2 bg-[#e5e7eb] w-[77vw]">
-      {/* LEFT */}
-      <div className="flex flex-col w-2/3">
-        <div className="flex w-[50vw]">
-          {/* Cards container: center horizontally + gap */}
-          <div className="bg-[#ffffff] h-52 w-60 m-5 shadow-xl rounded-lg flex flex-col items-center justify-center">
-            <div className="h-32 w-32 m-5 border-[10px] border-[#3b82f6] border-solid rounded-full flex items-center justify-center m-5">
-              <h2 className="font-bold text-2xl">699</h2>
-            </div>
-            <h2 className="font-semibold text-xl">Products</h2>
+    <div className="h-screen p-6 bg-[#e5e7eb] overflow-auto">
+      {/* Top Cards */}
+      <div className="flex flex-wrap gap-6 justify-center mb-8">
+        <div className="bg-white w-60 h-52 shadow-xl rounded-lg flex flex-col items-center justify-center">
+          <div className="h-32 w-32 border-[10px] border-[#3b82f6] rounded-full flex items-center justify-center">
+            <h2 className="font-bold text-2xl">699</h2>
           </div>
-          <div className="bg-[#ffffff] h-52 w-60 m-5 shadow-xl rounded-lg flex flex-col items-center justify-center">
-            <div className="h-32 w-32 m-5 border-[10px] border-[#ef4444] border-solid rounded-full flex items-center justify-center m-5">
-              <h2 className="font-bold text-2xl">100</h2>
-            </div>
-            <h2 className="font-semibold text-xl">Products</h2>
-          </div>
-          <div className="bg-[#ffffff] h-52 w-60 m-5 shadow-xl rounded-lg flex flex-col items-center justify-center">
-            <div className="h-32 w-32 m-5 border-[10px] border-[#9ca3af] border-solid rounded-full flex items-center justify-center m-5">
-              <h2 className="font-bold text-2xl">200</h2>
-            </div>
-            <h2 className="font-semibold text-xl">Users</h2>
-          </div>
+          <h2 className="font-semibold text-xl mt-2">Products</h2>
         </div>
 
-        {/* TABLE */}
-        <div className="bg-[#ffffff] m-5 p-5 rounded-lg">
-          <div className="p-6 bg-[#ffffff] rounded-md">
-            <h3 className="text-lg font-bold mb-4">Latest Transactions</h3>
-            <table className="min-w-full table-auto">
-              <thead>
-                <tr className="bg-[#f3f4f6]">
-                  <th className="py-2 px-4">Customer</th>
-                  <th className="py-2 px-4">Amount</th>
-                  <th className="py-2 px-4">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Customer 1</td>
-                  <td className="py-2 px-4">Ksh 200</td>
-                  <td className="py-2 px-4 text-[#22c55e]">Approved</td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Customer 2</td>
-                  <td className="py-2 px-4">Ksh 200</td>
-                  <td className="py-2 px-4 text-[#ef4444]">Decline</td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Customer 3</td>
-                  <td className="py-2 px-4">Ksh 200</td>
-                  <td className="py-2 px-4 text-[#22c55e]">Approved</td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Customer 4</td>
-                  <td className="py-2 px-4">Ksh 200</td>
-                  <td className="py-2 px-4 text-[#ef4444]">Decline</td>
-                </tr>
-                <tr className="border-b">
-                  <td className="py-2 px-4">Customer 5</td>
-                  <td className="py-2 px-4">Ksh 200</td>
-                  <td className="py-2 px-4 text-[#22c55e]">Approved</td>
-                </tr>
-              </tbody>
-            </table>
+        <div className="bg-white w-60 h-52 shadow-xl rounded-lg flex flex-col items-center justify-center">
+          <div className="h-32 w-32 border-[10px] border-[#ef4444] rounded-full flex items-center justify-center">
+            <h2 className="font-bold text-2xl">100</h2>
           </div>
+          <h2 className="font-semibold text-xl mt-2">Orders</h2>
+        </div>
+
+        <div className="bg-white w-60 h-52 shadow-xl rounded-lg flex flex-col items-center justify-center">
+          <div className="h-32 w-32 border-[10px] border-[#9ca3af] rounded-full flex items-center justify-center">
+            <h2 className="font-bold text-2xl">200</h2>
+          </div>
+          <h2 className="font-semibold text-xl mt-2">Users</h2>
         </div>
       </div>
 
-      {/* RIGHT */}
-      <div className="flex flex-col w-1/3 bg-[#ffffff] p-5 shadow-xl rounded-lg">
-        <div className="bg-[#f9fafb] p-5 mb-5 shadow-xl rounded-lg flex flex-col items-center">
+      {/* Transactions Table */}
+      <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
+        <h3 className="text-lg font-bold mb-4">Latest Transactions</h3>
+        <table className="min-w-full table-auto">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="py-2 px-4 text-left">Customer</th>
+              <th className="py-2 px-4 text-left">Amount</th>
+              <th className="py-2 px-4 text-left">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["Customer 1", "Ksh 200", "Approved"],
+              ["Customer 2", "Ksh 200", "Declined"],
+              ["Customer 3", "Ksh 200", "Approved"],
+              ["Customer 4", "Ksh 200", "Declined"],
+              ["Customer 5", "Ksh 200", "Approved"],
+            ].map(([name, amount, status], i) => (
+              <tr key={i} className="border-b">
+                <td className="py-2 px-4">{name}</td>
+                <td className="py-2 px-4">{amount}</td>
+                <td
+                  className={`py-2 px-4 ${
+                    status === "Approved" ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {status}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Bottom: Revenue, Losses, and Chart */}
+      <div className="flex flex-wrap gap-6">
+        <div className="bg-white flex-1 min-w-[250px] p-5 shadow-xl rounded-lg flex items-center justify-center text-center">
           <h2 className="font-bold text-2xl">Total Revenue: $200,000</h2>
         </div>
-
-        <div className="bg-[#f9fafb] p-5 mb-5 shadow-xl rounded-lg flex flex-col items-center">
+        <div className="bg-white flex-1 min-w-[250px] p-5 shadow-xl rounded-lg flex items-center justify-center text-center">
           <h2 className="font-bold text-2xl">Total Losses: $0</h2>
         </div>
-
-        <LineChart
-          xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-          series={[
-            {
-              data: [2, 5.5, 2, 8.5, 1.5, 5],
-            },
-          ]}
-          height={350}
-          margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
-          grid={{ vertical: true, horizontal: true }}
-        />
+        <div className="bg-white w-full p-5 mt-4 shadow-xl rounded-lg">
+          <LineChart
+            xAxis={[{ data: [1, 2, 3, 5, 8, 10], label: "Month" }]}
+            series={[
+              {
+                data: [2, 5.5, 2, 8.5, 1.5, 5],
+                label: "Sales",
+              },
+            ]}
+            height={350}
+            margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
+            grid={{ vertical: true, horizontal: true }}
+          />
+        </div>
       </div>
     </div>
   );
