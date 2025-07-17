@@ -1,13 +1,29 @@
+import { useLocation } from "react-router-dom";
 import Products from "../components/Products";
+import { useState } from "react";
 
 const ProductList = () => {
+
+  const location =useLocation();
+  const query = location.pathname.split("/")[2];
+  const [filters, setFilters] = useState({});
+  const {sort, setSort} = useState("newest")
+
+  const handleFilters = (e) =>{
+    const value = e.target.value;
+    setFilters({
+      ...filters,
+      [e.target.name]: value,
+    })
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="flex justify-between m-4">
         {/* LEFT*/}
         <div className="flex flex-col sm:flex-row sm:items-center">
           <span className="text-lg font-semibold mr-4">Filter Products</span>
-          <select name="concern" id="" className="p-2 mb-4 sm:mb-0 sm:mr-4">
+          <select name="concern" id="" className="p-2 mb-4 sm:mb-0 sm:mr-4" onChange={handleFilters}>
             <option>Concern</option>
                 <option>Cement & Concrete</option>
                 <option>Steel & Reinforcement</option>
@@ -34,8 +50,7 @@ const ProductList = () => {
                 <option>Interior Finishes & Decor</option>
                 <option>Sealants & Bonding Agents</option>
           </select>
-          <select name="brand" id="" className="p-2 mb-4 sm:mb-0 sm:mr-4">
-            <option>Brand</option>
+          <select name="brand" id="" className="p-2 mb-4 sm:mb-0 sm:mr-4" onChange={handleFilters}>
             <option>Bamburi cement</option>
             <option>Bamburi cement</option>
             <option>Bamburi cement</option>
@@ -45,15 +60,15 @@ const ProductList = () => {
         </div>
         {/* LEFT*/}
         <div className="flex flex-col sm:flex-row sm:items-center">
-          <span className="text-lg font-semibold mr-4">Filter Products</span>
-          <select name="" id="">
+          <span className="text-lg font-semibold mr-4">Sort Products</span>
+          <select name="price" id="" onChange={(e) => setSort(e.target.value)}>
             <option value="newest">Newest</option>
             <option value="asc">Price (asc)</option>
             <option value="desc">Price (desc)</option>
           </select>
         </div>
       </div>
-      <Products />
+      <Products query={query} filters={filters} sort={sort}/>
     </div>
   );
 };
