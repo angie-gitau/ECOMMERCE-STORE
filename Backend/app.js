@@ -7,6 +7,7 @@ import productRoute from "./routes/product.route.js";
 import bannerRoute from "./routes/banner.route.js";
 import userRoute from "./routes/user.route.js";
 import orderRoute from "./routes/order.route.js";
+import stripeRoute from "./routes/stripe.js";
 
 
 
@@ -25,8 +26,9 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/products", productRoute);
 app.use("/api/v1/banners", bannerRoute);
-app.use("/api/v1/users", userRoute)
-app.use("/api/v1/orders", orderRoute)
+app.use("/api/v1/users", userRoute);
+app.use("/api/v1/orders", orderRoute);
+app.use("/api/v1/stripe", stripeRoute)
 
 
 //Error middleware

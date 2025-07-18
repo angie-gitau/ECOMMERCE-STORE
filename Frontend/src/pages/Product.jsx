@@ -3,29 +3,30 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import { userRequest } from "../requestMethods";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { addProduct } from "../redux/cartRedux";
 
 const Product = () => {
-
   const location = useLocation();
-  const id = location.pathname.split("/")[2]
+  const id = location.pathname.split("/")[2];
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
-  
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
 
   let price;
 
   const handleQuantity = (action) => {
     if (action === "dec") {
-      setQuantity(quantity === 1 ? 1 : quantity - 1)
+      setQuantity(quantity === 1 ? 1 : quantity - 1);
     }
 
     if (action === "inc") {
-      setQuantity(quantity + 1)
+      setQuantity(quantity + 1);
     }
-  }
-
+  };
 
   useEffect(() => {
     const getProduct = async () => {
@@ -44,12 +45,12 @@ const Product = () => {
   const handlePrice = (
     originalPrice,
     discountedPrice,
-    wholePrice,
+    wholesalePrice,
     minimumQuantity,
     quantity
   ) => {
     if (quantity > minimumQuantity && discountedPrice) {
-      discountedPrice = wholePrice;
+      discountedPrice = wholesalePrice;
 
       price = discountedPrice;
 
@@ -71,9 +72,37 @@ const Product = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    dispatch(
+      addProduct({ ...product, quantity, price, email: "youremail@gmail.com" })
+    );
+    toast.success("Product has been added to basket successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
+    console.log(cart);
+  };
 
   return (
     <div className="h-auto flex justify-stretch p-[30px]">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       {/**LEFT SIDE**/}
       <div className="flex-1 h-[500px] w-[600px]">
         <img
@@ -86,13 +115,16 @@ const Product = () => {
       <div className="flex flex-1 flex-col ml-10">
         <h1 className="text-[25px] font-semibold mb-[20px]">{product.title}</h1>
         <span>{product.desc}</span>
-        <h2 className="font-semibold mt-2 text-[20px]">Ksh{handlePrice(
+        <h2 className="font-semibold mt-2 text-[20px]">
+          Ksh
+          {handlePrice(
             product.originalPrice,
             product.discountedPrice,
             product.wholesalePrice,
             product?.wholesaleMinimumQuantity,
             quantity
-          )}</h2>
+          )}
+        </h2>
         <span className="flex items-center">
           <StarRatings
             rating={2.403}
@@ -112,14 +144,24 @@ const Product = () => {
           </span>
         </div>
         <div className="inline-flex items-center bg-orange-600 text-white font-semibold text-sm p-3 rounded-full shadow-md">
-          Available : Ksh {product.wholesalePrice} from {product.wholesaleMinimumQuantity} items
+          Available : Ksh {product.wholesalePrice} from{" "}
+          {product.wholesaleMinimumQuantity} items
         </div>
         <div className="flex items-center my-5 p-4">
-          <FaMinus className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl" onClick={() => handleQuantity("dec")} />
+          <FaMinus
+            className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl"
+            onClick={() => handleQuantity("dec")}
+          />
           <span className="text-lg font-semibold mx-4">{quantity}</span>
-          <FaPlus className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl" onClick={() => handleQuantity("inc")} />
+          <FaPlus
+            className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl"
+            onClick={() => handleQuantity("inc")}
+          />
         </div>
-        <button className="bg-black p-[10px] w-[200px] text-white cursor-pointer">
+        <button
+          className="bg-black p-[10px] w-[200px] text-white cursor-pointer"
+          onClick={handleAddToCart}
+        >
           Add to cart
         </button>
         <hr className="my-6" />
