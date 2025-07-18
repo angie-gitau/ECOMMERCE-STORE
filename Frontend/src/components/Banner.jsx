@@ -38,7 +38,7 @@ const Banner = () => {
         <h1 className="text-3xl mt-3">{banner.title}</h1>
 
         <div className="flex items-center mt-[20px]">
-          <Button
+          <button
             sx={{
               backgroundColor: "#8B4513",
               padding: "10px",
@@ -52,9 +52,9 @@ const Banner = () => {
             }}
           >
             Shop Now
-          </Button>
+          </button>
 
-          <Button
+          <button
             sx={{
               backgroundColor: "#708090",
               padding: "10px",
@@ -68,7 +68,7 @@ const Banner = () => {
             }}
           >
             CALL: 0712345678{" "}
-          </Button>
+          </button>
         </div>
       </div>
     </div>
