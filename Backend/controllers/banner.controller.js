@@ -32,7 +32,7 @@ const getAllBanners = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Banners not fetched or something went wrong");
   } else {
-    req.status(200).json(banners);
+    res.status(200).json(banners);
   }
 });
 
