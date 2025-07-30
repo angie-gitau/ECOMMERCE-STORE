@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addProduct } from "../redux/cartRedux";
+import { showAverageRating } from "../components/Ratings";
 
 const Product = () => {
   const location = useLocation();
@@ -125,15 +126,7 @@ const Product = () => {
             quantity
           )}
         </h2>
-        <span className="flex items-center">
-          <StarRatings
-            rating={2.403}
-            starDimension="25px"
-            starRatedColor="yellow"
-            starSpacing="5px"
-          />
-          (2)
-        </span>
+        <span className="flex items-center">{showAverageRating(product)}</span>
         <div className="h-52 w-96 border-2 border-gray-300 rounded-lg shadow-md my-4 p-6">
           <h2 className="flex items-center justify-center font-semibold text-lg text-gray-700 mb-4">
             Content
@@ -167,24 +160,17 @@ const Product = () => {
         <hr className="my-6" />
         <div className="flex flex-col">
           <h2 className="font-semibold text-[18px]">Reviews</h2>
-          <div className="flex items-center">
-            <StarRatings
-              rating={2.403}
-              starDimension="25px"
-              starRatedColor="yellow"
-              starSpacing="5px"
-            />
-            <span className="font-semibold mx-[20px]">Angie G.</span>
-          </div>
-          <div className="flex items-center">
-            <StarRatings
-              rating={2.403}
-              starDimension="25px"
-              starRatedColor="yellow"
-              starSpacing="5px"
-            />
-            <span className="font-semibold mx-[20px]">Angie W.</span>
-          </div>
+          {product?.ratings.map((rating, index) => {
+            <div className="flex items-center" key={index} >
+              <StarRatings
+                rating={parseInt(rating.star)}
+                starDimension="25px"
+                starRatedColor="yellow"
+                starSpacing="5px"
+              />
+              <span className="font-semibold mx-[20px]">{rating.postedBy}</span>
+            </div>;
+          })}
         </div>
       </div>
     </div>

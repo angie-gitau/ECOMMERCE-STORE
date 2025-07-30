@@ -1,10 +1,14 @@
 import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeProduct } from "../redux/cartRedux";
-import { userRequest } from "../requestMethods"
+import { userRequest } from "../requestMethods";
+import { toast, ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleRemoveProduct = (product) => {
@@ -15,24 +19,39 @@ const Cart = () => {
     dispatch(clearCart());
   };
 
-  const handleCheckout = async() => {
-    try {
-      const res = await userRequest.post("/stripe/create-checkout-session",{
-        cart,
-        userId: "123456",
-        email:"angie@gmail.com",
-        name:"angie g",
-      });
-      if(res.data.url){
-        window.location.href = res.data.url;
+  const handleCheckout = async () => {
+    if (user.currentUser) {
+      try {
+        const res = await userRequest.post("/stripe/create-checkout-session", {
+          cart,
+          userId: user.currentUser._id,
+          email: user.currentUser.email,
+          name: user.currentUser.name,
+        });
+        if (res.data.url) {
+          window.location.href = res.data.url;
+        }
+      } catch (error) {
+        console.log(error.message);
       }
-    } catch (error) {
-      console.log();
+    } else {
+      toast.error("Please login to proceed to checkout.");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen p-8">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <h2 className="text-[18px] font-bold mb-6">Shopping cart</h2>
       <div className="flex gap-8">
         {/*LEFT*/}
@@ -103,8 +122,9 @@ const Cart = () => {
               <span className="text-lg font-medium">Total:</span>
               <span className="text-lg font-medium">Ksh {cart.total}</span>
             </div>
-            <button className="bg-orange-600 text-white p-3 w-full rounded-lg font-semibold"
-            onClick={handleCheckout}
+            <button
+              className="bg-orange-600 text-white p-3 w-full rounded-lg font-semibold"
+              onClick={handleCheckout}
             >
               Proceed to checkout
             </button>
