@@ -50,8 +50,6 @@ const Banners = () => {
   };
 
   useEffect(() => {
-    getBanners();
-  }, []);
 
   const getBanners = async () => {
     try {
@@ -62,6 +60,8 @@ const Banners = () => {
       console.log(error);
     }
   };
+  getBanners();
+  }, []);
 
   
   const handleDelete = async(id) =>{
