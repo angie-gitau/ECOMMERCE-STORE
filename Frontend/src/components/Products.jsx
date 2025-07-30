@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Product from "./Product";
-import PropTypes from "prop-types"
-import {userRequest} from "../requestMethods"
-import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
+import { userRequest } from "../requestMethods";
+import { Link } from "react-router-dom";
 
 const Products = ({ filters, sort, query }) => {
   const [products, setProducts] = useState([]);
@@ -28,56 +28,49 @@ const Products = ({ filters, sort, query }) => {
     getProducts();
   }, [query]);
 
- useEffect(() => {
-
+  useEffect(() => {
     let tempProducts = [...products];
 
-    // apply filters
-
+    // Apply filters
     if (filters) {
-      tempProducts = tempProducts.filter((item) => Object.entries(filters).every(([key, value]) => {
-        if (!value) return true;
-
-        return item[key].includes(value);
-      }))
+      tempProducts = tempProducts.filter((item) =>
+        Object.entries(filters).every(([key, value]) => {
+          if (!value) return true;
+          return item[key]?.includes(value); // safer with optional chaining
+        })
+      );
     }
 
-
-    //Apply sorting
-
+    // Apply sorting
     if (sort === "newest") {
       tempProducts.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      )
+      );
     } else if (sort === "asc") {
-
       tempProducts.sort((a, b) => a.originalPrice - b.originalPrice);
-
     } else if (sort === "desc") {
       tempProducts.sort((a, b) => b.originalPrice - a.originalPrice);
     }
 
     setFilteredProducts(tempProducts);
-  }, [products, filters, sort])
+  }, [products, filters, sort]);
 
   return (
-    <div className="grid grid-cols-4 gap-6 px-[30px]">
-      {filteredProducts.map((product, index) => (
-
-        <Link to={`/product/${product._id}`}>
-          <Product img={product.img} title={product.title} />
+    <div className="flex flex-wrap mx-[40px]">
+      {filteredProducts.map((product) => (
+        <Link to={`/product/${product._id}`} key={product._id}>
+          <Product product={product} />
         </Link>
-      ))
-      }
+      ))}
     </div>
   );
 };
 
-Products.PropTypes = {
+Products.propTypes = {
   cat: PropTypes.string,
   filters: PropTypes.object,
   sort: PropTypes.string,
-  query: PropTypes.string
-}
+  query: PropTypes.string,
+};
 
 export default Products;

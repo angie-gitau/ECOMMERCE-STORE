@@ -16,12 +16,12 @@ router.post("/", createOrder);
 router.put("/:id", updateOrder);
 
 //GET ALL ORDERS ROUTE
-router.get("/",protect,getAllOrders);
+router.get("/", getAllOrders);
 
 //DELETE ORDER
 router.delete("/:id", deleteOrder);
 
 //GET USER'S ORDER ROUTE
-router.get("/find/:userId", getUserOrder);
+router.get("/find/:id", getUserOrder);
 
 export default router;
