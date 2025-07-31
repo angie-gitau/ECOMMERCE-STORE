@@ -50,28 +50,26 @@ const Banners = () => {
   };
 
   useEffect(() => {
-
-  const getBanners = async () => {
-    try {
-      const res = await userRequest.get("/banners");
-      console.log("Admin fetched banners:", res.data); // ✅ kept exactly
-      setBanners(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  getBanners();
+    const getBanners = async () => {
+      try {
+        const res = await userRequest.get("/banners");
+        console.log("Admin fetched banners:", res.data);
+        setBanners(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBanners();
   }, []);
 
-  
-  const handleDelete = async(id) =>{
+  const handleDelete = async (id) => {
     try {
       await userRequest.delete(`/banners/${id}`);
       window.location.reload();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="flex justify-evenly m-[10%]">
@@ -93,7 +91,10 @@ const Banners = () => {
                 <h3 className="text-xl font-semibold mb-2">{banner.title}</h3>
                 <p className="text-[#4b5563] mb-2">{banner.subtitle}</p>
               </div>
-              <button className="bg-[#ef4444] p-2 text-[#ffffff] font-semibold cursor-pointer" onClick={() => handleDelete(banner._id)}>
+              <button
+                className="bg-[#ef4444] p-2 text-[#ffffff] font-semibold cursor-pointer rounded-md"
+                onClick={() => handleDelete(banner._id)}
+              >
                 Delete
               </button>
             </div>
@@ -149,7 +150,7 @@ const Banners = () => {
           />
         </div>
         <button
-          className="bg-[#1e1e1e] p-2 text-[#ffffff] font-semibold cursor-pointer"
+          className="bg-[#1e1e1e] p-2 text-[#ffffff] font-semibold cursor-pointer rounded-md"
           onClick={handleUpload}
         >
           Upload

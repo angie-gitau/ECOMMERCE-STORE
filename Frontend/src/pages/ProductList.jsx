@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import Products from "../components/Products";
+import AIQuantityEstimator from "../components/AIQuantityEstimator";
 import { useState } from "react";
 
 const ProductList = () => {
@@ -69,6 +70,7 @@ const ProductList = () => {
         </div>
       </div>
       <Products query={query} filters={filters} sort={sort}/>
+      <AIQuantityEstimator />
     </div>
   );
 };

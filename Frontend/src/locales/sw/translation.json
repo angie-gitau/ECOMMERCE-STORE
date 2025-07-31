@@ -1,0 +1,36 @@
+{
+    "navbar": {
+      "search": "tafuta",
+      "login": "Ingia",
+      "cart": "Mkokoteni"
+    },
+    "footer": {
+      "about": "Kuhusu Sisi",
+      "contact": "Wasiliana Nasi",
+      "privacy": "Sera ya Faragha",
+      "terms": "Sheria na Masharti"
+    },
+    "home": {
+      "welcome": "Karibu kwenye duka letu",
+      "featured": "Bidhaa Zilizochaguliwa",
+      "viewAll": "Ona Zote"
+    },
+    "product": {
+      "addToCart": "Ongeza kwenye Mkokoteni",
+      "price": "Bei",
+      "description": "Maelezo",
+      "reviews": "Tathmini"
+    },
+    "cart": {
+      "empty": "Mkokoteni wako ni tupu",
+      "checkout": "Maliza Kununua",
+      "total": "Jumla"
+    },
+    "auth": {
+      "login": "Ingia",
+      "register": "Jisajili",
+      "email": "Barua Pepe",
+      "password": "Nywila",
+      "confirmPassword": "Thibitisha Nywila"
+    }
+  }
