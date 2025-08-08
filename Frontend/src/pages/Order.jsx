@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 const Order = () => {
   const user = useSelector((state) => state.user);
+  const cart = useSelector((state) => state.cart); // ✅ Add this line
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {

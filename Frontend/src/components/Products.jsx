@@ -8,44 +8,33 @@ const Products = ({ filters, sort, query }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  console.log(products);
-
   useEffect(() => {
-    const getProducts = async () => {
+    const fetchProducts = async () => {
       try {
-        let res;
-
-        if (query) {
-          res = await userRequest.get(`/products?search=${query}`);
-        } else {
-          res = await userRequest.get("/products");
-        }
+        const endpoint = query ? `/products?search=${query}` : "/products";
+        const res = await userRequest.get(endpoint);
         setProducts(res.data);
       } catch (error) {
-        console.log(error);
+        console.error("Failed to fetch products:", error);
       }
     };
-    getProducts();
+
+    fetchProducts();
   }, [query]);
 
   useEffect(() => {
     let tempProducts = [...products];
 
-    // Apply filters
     if (filters) {
       tempProducts = tempProducts.filter((item) =>
-        Object.entries(filters).every(([key, value]) => {
-          if (!value) return true;
-          return item[key]?.includes(value); // safer with optional chaining
-        })
+        Object.entries(filters).every(([key, value]) =>
+          !value ? true : item[key]?.includes(value)
+        )
       );
     }
 
-    // Apply sorting
     if (sort === "newest") {
-      tempProducts.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
+      tempProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     } else if (sort === "asc") {
       tempProducts.sort((a, b) => a.originalPrice - b.originalPrice);
     } else if (sort === "desc") {
