@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 const Order = () => {
   const user = useSelector((state) => state.user);
+  const cart = useSelector((state) => state.cart); // ✅ Add this line
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -124,15 +125,15 @@ const handleRating = async(id) =>{
           <h3 className="text-xl font-semibold mb-2">Order summary</h3>
           <div className="flex justify-between mb-2">
             <span className="text-lg font-medium">Subtotal</span>
-            <span className="text-lg font-semibold">Ksh 2000</span>
+            <span className="text-lg font-semibold">Ksh {cart.total}</span>
           </div>
           <div className="flex justify-between mb-2">
             <span className="text-lg font-medium">Shipping</span>
-            <span className="text-lg font-semibold">Ksh 1000</span>
+            <span className="text-lg font-semibold">Ksh 100</span>
           </div>
           <div className="flex justify-between mb-2">
             <span className="text-lg font-medium">Total</span>
-            <span className="text-lg font-semibold">Ksh 3000</span>
+            <span className="text-lg font-semibold">Ksh {cart.total}</span>
           </div>
         </div>
         <div className="mt-8 text-center">

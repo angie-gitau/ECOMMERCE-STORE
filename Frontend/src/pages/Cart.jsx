@@ -2,26 +2,34 @@ import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeProduct } from "../redux/cartRedux";
 import { userRequest } from "../requestMethods";
-import { toast, ToastContainer } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [paymentMethod, setPaymentMethod] = useState("stripe");
+  const [loading, setLoading] = useState(false);
 
   const handleRemoveProduct = (product) => {
     dispatch(removeProduct(product));
   };
 
-  const handleClearProduct = (product) => {
+  const handleClearProduct = () => {
     dispatch(clearCart());
   };
 
   const handleCheckout = async () => {
-    if (user.currentUser) {
-      try {
+    if (!user.currentUser) {
+      toast.error("Please login to proceed to checkout.");
+      return;
+    }
+    setLoading(true);
+
+    try {
+      if (paymentMethod === "stripe") {
         const res = await userRequest.post("/stripe/create-checkout-session", {
           cart,
           userId: user.currentUser._id,
@@ -31,11 +39,31 @@ const Cart = () => {
         if (res.data.url) {
           window.location.href = res.data.url;
         }
-      } catch (error) {
-        console.log(error.message);
+      } else if (paymentMethod === "mpesa") {
+        const phone = prompt(
+          "Enter your M-Pesa phone number (e.g. 2547XXXXXXXX):"
+        );
+        if (!phone || !/^2547\d{8}$/.test(phone)) {
+          toast.error("Invalid phone number format.");
+          setLoading(false);
+          return;
+        }
+        const res = await userRequest.post("/mpesa/stk-push", {
+          cart,
+          userId: user.currentUser._id,
+          phone,
+        });
+
+        if (res.data.success) {
+          toast.success(res.data.message || "STK Push sent! Complete payment on your phone.");
+        } else {
+          toast.error(res.data.message || "Failed to initiate M-Pesa payment.");
+        }
       }
-    } else {
-      toast.error("Please login to proceed to checkout.");
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message || "Payment failed.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,16 +97,20 @@ const Cart = () => {
                   className="w-32 h-32 object-cover rounded-md"
                 />
                 <div className="flex-1 ml-4">
-                  <h3 className="text-xl font-semibold mb-2">
-                    {product.title}
-                  </h3>
+                  <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
                   <p className="text-gray-600 mb-2">{product.desc}</p>
                   <div className="flex items-center my-5 p-4">
-                    <FaMinus className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl" />
+                    <FaMinus
+                      className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl"
+                      onClick={() => dispatch(removeProduct(product))}
+                    />
                     <span className="text-lg font-semibold mx-4">
                       {product.quantity}
                     </span>
-                    <FaPlus className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl" />
+                    <FaPlus
+                      className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl"
+                      // You can add increase quantity functionality here
+                    />
                   </div>
                 </div>
                 <div className="text-right">
@@ -101,12 +133,8 @@ const Cart = () => {
             </button>
           </div>
         </div>
-        <div />
-        <div />
-        <div />
 
         {/*RIGHT*/}
-
         <div className="w-80 bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Order summary</h2>
           <div className="flex flex-col space-y-4">
@@ -116,17 +144,31 @@ const Cart = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-lg font-medium">Shipping:</span>
-              <span className="text-lg font-medium">Ksh 1000</span>
+              <span className="text-lg font-medium">Ksh 100</span>
             </div>
             <div className="flex justify-between">
               <span className="text-lg font-medium">Total:</span>
               <span className="text-lg font-medium">Ksh {cart.total}</span>
             </div>
+            <div>
+              <label className="font-semibold mr-2">Payment Method:</label>
+              <select
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className="border rounded p-2 w-full mt-2"
+              >
+                <option value="stripe">Card (Stripe)</option>
+                <option value="mpesa">M-Pesa STK</option>
+              </select>
+            </div>
             <button
-              className="bg-orange-600 text-white p-3 w-full rounded-lg font-semibold"
+              disabled={loading}
+              className={`bg-orange-600 text-white p-3 w-full rounded-lg font-semibold mt-2 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={handleCheckout}
             >
-              Proceed to checkout
+              {loading ? "Processing..." : "Proceed to checkout"}
             </button>
           </div>
         </div>

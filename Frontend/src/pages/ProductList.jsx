@@ -53,10 +53,10 @@ const ProductList = () => {
           </select>
           <select name="brand" id="" className="p-2 mb-4 sm:mb-0 sm:mr-4" onChange={handleFilters}>
             <option>Bamburi cement</option>
-            <option>Bamburi cement</option>
-            <option>Bamburi cement</option>
-            <option>Bamburi cement</option>
-            <option>Bamburi cement</option>
+            <option>Twyford tiles</option>
+            <option>APL Apolo Pipes</option>
+            <option>Kenya Builders and Concrete</option>
+            <option>Woodways Ltd</option>
           </select>
         </div>
         {/* LEFT*/}

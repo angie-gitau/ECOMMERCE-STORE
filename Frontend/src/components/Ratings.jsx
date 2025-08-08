@@ -1,37 +1,37 @@
-import StarRating from "react-star-ratings";
-export const showAverageRating = (p) => {
-  if (p && p.ratings) {
-    let ratingsArray = p && p.ratings;
+import StarRatings from "react-star-ratings";
 
-    let total = [];
-
-    let length = ratingsArray.length;
-    ratingsArray.map((r) => total.push(r.star));
-    let totalReduced = total.reduce((p, n) => p + n, 0);
-    let highest = length * 5;
-    let result = (totalReduced * 5) / highest;
-
-    console.log("result", result)
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: "5px",
-        }}
-      >
-       {result ?  <span>
-          <StarRating
-            starSpacing="2px"
-            starRatedColor="#d1411e"
-            starDimension="18px"
-            rating={result}
-            editing={false}
-          />
-          ({length})
-        </span> : ""}
-      </div>
-    );
+export const showAverageRating = (product) => {
+  if (!product?.ratings || product.ratings.length === 0) {
+    return <div className="text-sm italic text-gray-400">No ratings yet</div>;
   }
+
+  const total = product.ratings.reduce((acc, curr) => acc + curr.star, 0);
+  const length = product.ratings.length;
+  const highestPossible = length * 5;
+  const average = (total * 5) / highestPossible;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        margin: "5px",
+      }}
+    >
+      <span>
+        <StarRatings
+          starSpacing="2px"
+          starRatedColor="#d1411e"
+          starDimension="18px"
+          rating={average}
+          numberOfStars={5}
+          name="rating"
+        />
+        <span style={{ marginLeft: "5px", fontSize: "12px", color: "#666" }}>
+          ({length})
+        </span>
+      </span>
+    </div>
+  );
 };
