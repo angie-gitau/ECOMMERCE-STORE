@@ -40,24 +40,32 @@ const Cart = () => {
           window.location.href = res.data.url;
         }
       } else if (paymentMethod === "mpesa") {
-        const phone = prompt(
-          "Enter your M-Pesa phone number (e.g. 2547XXXXXXXX):"
-        );
+        // Ask user for phone number
+        const phone = prompt("Enter your M-Pesa phone number (e.g., 2547XXXXXXXX):");
+
+        // Validate phone format
         if (!phone || !/^2547\d{8}$/.test(phone)) {
-          toast.error("Invalid phone number format.");
+          toast.error("Invalid phone number format. Please use 2547XXXXXXXX.");
           setLoading(false);
           return;
         }
-        const res = await userRequest.post("/mpesa/stk-push", {
-          cart,
-          userId: user.currentUser._id,
-          phone,
-        });
 
-        if (res.data.success) {
-          toast.success(res.data.message || "STK Push sent! Complete payment on your phone.");
-        } else {
-          toast.error(res.data.message || "Failed to initiate M-Pesa payment.");
+        try {
+          // Make API call to your backend
+          const res = await userRequest.post("/mpesa/stkpush", {
+            phone,
+            amount: cart.total,
+          });
+
+          // Check response success from backend
+          if (res.data.success) {
+            toast.success("✅ STK Push sent! Check your phone to complete payment.");
+          } else {
+            toast.error(res.data.message || "Failed to initiate M-Pesa payment.");
+          }
+        } catch (err) {
+          console.error("M-Pesa Payment Error:", err);
+          toast.error(err.response?.data?.message || "Payment request failed.");
         }
       }
     } catch (error) {
@@ -109,7 +117,7 @@ const Cart = () => {
                     </span>
                     <FaPlus
                       className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl"
-                      // You can add increase quantity functionality here
+                      // Add increase quantity functionality if needed
                     />
                   </div>
                 </div>
@@ -147,7 +155,7 @@ const Cart = () => {
               <span className="text-lg font-medium">Ksh 100</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-lg font-medium">Total:</span>
+              <span className="text-lg font-medium">Total</span>
               <span className="text-lg font-medium">Ksh {cart.total}</span>
             </div>
             <div>
