@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL =
   window.location.hostname === "localhost"
     ? "http://localhost:8000/api/v1/"
-    : "https://36e674df84c9.ngrok-free.app/api/v1/";  // <-- your current ngrok URL here
+    : "https://eaf88190bad7.ngrok-free.app/api/v1/";  // <-- your current ngrok URL here
 
 export const userRequest = axios.create({
   baseURL: BASE_URL,

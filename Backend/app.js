@@ -18,7 +18,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173", // main frontend
   "http://localhost:5174", // admin panel
-  "https://36e674df84c9.ngrok-free.app" // Add your current ngrok URL here
+  "https://eaf88190bad7.ngrok-free.app" // Add your current ngrok URL here
 ];
 
 app.use(cors({

@@ -1,6 +1,6 @@
 import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart, removeProduct } from "../redux/cartRedux";
+import { clearCart, removeProduct, updateQuantity } from "../redux/cartRedux";
 import { userRequest } from "../requestMethods";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,6 +13,29 @@ const Cart = () => {
   const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [loading, setLoading] = useState(false);
 
+  // ========== SHIPPING LOGIC ==========
+  const calculateShipping = () => {
+    if (cart.total < 1000) return 100;
+    if (cart.total < 10000) return cart.total * 0.09;
+    return cart.total * 0.1;
+  };
+
+  const shippingCost = calculateShipping();
+  const totalWithShipping = cart.total + shippingCost;
+
+  // ========== PRODUCT ACTIONS ==========
+  const handleDecreaseQuantity = (product) => {
+    if (product.quantity > 1) {
+      dispatch(updateQuantity({ id: product._id, quantity: product.quantity - 1 }));
+    } else {
+      dispatch(removeProduct(product));
+    }
+  };
+
+  const handleIncreaseQuantity = (product) => {
+    dispatch(updateQuantity({ id: product._id, quantity: product.quantity + 1 }));
+  };
+
   const handleRemoveProduct = (product) => {
     dispatch(removeProduct(product));
   };
@@ -21,11 +44,13 @@ const Cart = () => {
     dispatch(clearCart());
   };
 
+  // ========== CHECKOUT ==========
   const handleCheckout = async () => {
     if (!user.currentUser) {
       toast.error("Please login to proceed to checkout.");
       return;
     }
+
     setLoading(true);
 
     try {
@@ -35,41 +60,39 @@ const Cart = () => {
           userId: user.currentUser._id,
           email: user.currentUser.email,
           name: user.currentUser.name,
+          shipping: shippingCost,
+          total: totalWithShipping,
         });
+
         if (res.data.url) {
           window.location.href = res.data.url;
+        } else {
+          toast.error("Stripe checkout URL not received.");
         }
+
       } else if (paymentMethod === "mpesa") {
-        // Ask user for phone number
         const phone = prompt("Enter your M-Pesa phone number (e.g., 2547XXXXXXXX):");
 
-        // Validate phone format
         if (!phone || !/^2547\d{8}$/.test(phone)) {
-          toast.error("Invalid phone number format. Please use 2547XXXXXXXX.");
-          setLoading(false);
+          toast.error("Invalid phone number format. Use 2547XXXXXXXX.");
           return;
         }
 
-        try {
-          // Make API call to your backend
-          const res = await userRequest.post("/mpesa/stkpush", {
-            phone,
-            amount: cart.total,
-          });
+        const res = await userRequest.post("/mpesa/stkpush", {
+          phone,
+          amount: totalWithShipping,
+        });
 
-          // Check response success from backend
-          if (res.data.success) {
-            toast.success("✅ STK Push sent! Check your phone to complete payment.");
-          } else {
-            toast.error(res.data.message || "Failed to initiate M-Pesa payment.");
-          }
-        } catch (err) {
-          console.error("M-Pesa Payment Error:", err);
-          toast.error(err.response?.data?.message || "Payment request failed.");
+        if (res.data.success) {
+          toast.success("✅ STK Push sent! Check your phone.");
+        } else {
+          toast.error(res.data.message || "Failed to initiate M-Pesa payment.");
         }
       }
-    } catch (error) {
-      toast.error(error.response?.data?.message || error.message || "Payment failed.");
+
+    } catch (err) {
+      console.error("Checkout error:", err);
+      toast.error(err.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
@@ -77,20 +100,10 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen p-8">
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <ToastContainer position="top-right" autoClose={5000} />
       <h2 className="text-[18px] font-bold mb-6">Shopping cart</h2>
       <div className="flex gap-8">
-        {/*LEFT*/}
+        {/* ========== LEFT COLUMN ========== */}
         <div className="flex-1 bg-white shadow-md rounded-lg p-6">
           <h3 className="text-xl font-semibold mb-4">Your Items</h3>
           <div className="flex flex-col space-y-4">
@@ -110,20 +123,20 @@ const Cart = () => {
                   <div className="flex items-center my-5 p-4">
                     <FaMinus
                       className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl"
-                      onClick={() => dispatch(removeProduct(product))}
+                      onClick={() => handleDecreaseQuantity(product)}
                     />
                     <span className="text-lg font-semibold mx-4">
                       {product.quantity}
                     </span>
                     <FaPlus
                       className="bg-orange-600 text-white cursor-pointer p-2 rounded-full mr-4 text-3xl"
-                      // Add increase quantity functionality if needed
+                      onClick={() => handleIncreaseQuantity(product)}
                     />
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-xl font-bold mb-6">
-                    Ksh {product.discountedPrice}
+                    Ksh {(product.discountedPrice * product.quantity).toFixed(2)}
                   </p>
                   <FaTrashAlt
                     className="text-red-600 cursor-pointer"
@@ -142,24 +155,29 @@ const Cart = () => {
           </div>
         </div>
 
-        {/*RIGHT*/}
+        {/* ========== RIGHT COLUMN ========== */}
         <div className="w-80 bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Order summary</h2>
           <div className="flex flex-col space-y-4">
             <div className="flex justify-between">
               <span className="text-lg font-medium">Subtotal</span>
-              <span className="text-lg font-medium">Ksh {cart.total}</span>
+              <span className="text-lg font-medium">
+                Ksh {cart.total.toFixed(2)}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-lg font-medium">Shipping:</span>
-              <span className="text-lg font-medium">Ksh 100</span>
+              <span className="text-lg font-medium">Shipping</span>
+              <span className="text-lg font-medium">
+                Ksh {shippingCost.toFixed(2)}
+              </span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-lg font-medium">Total</span>
-              <span className="text-lg font-medium">Ksh {cart.total}</span>
+            <div className="flex justify-between font-bold text-lg">
+              <span>Total</span>
+              <span>Ksh {totalWithShipping.toFixed(2)}</span>
             </div>
+
             <div>
-              <label className="font-semibold mr-2">Payment Method:</label>
+              <label className="font-semibold mr-2">Payment Method</label>
               <select
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
@@ -169,12 +187,13 @@ const Cart = () => {
                 <option value="mpesa">M-Pesa STK</option>
               </select>
             </div>
+
             <button
               disabled={loading}
+              onClick={handleCheckout}
               className={`bg-orange-600 text-white p-3 w-full rounded-lg font-semibold mt-2 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              onClick={handleCheckout}
             >
               {loading ? "Processing..." : "Proceed to checkout"}
             </button>
