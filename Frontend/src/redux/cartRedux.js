@@ -22,6 +22,7 @@ const cartSlice = createSlice({
         state.products.push(action.payload);
         state.quantity += 1; // counts unique products
       }
+      
 
       state.email = action.payload.email;
       state.total = state.products.reduce(
