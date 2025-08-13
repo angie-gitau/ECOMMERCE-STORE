@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { userRequest } from "../requestMethods";
 import { Link } from "react-router-dom";
 
-const Products = ({ filters, sort, query }) => {
+const Products = ({ filters, sort, query, limit}) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -45,14 +45,17 @@ const Products = ({ filters, sort, query }) => {
   }, [products, filters, sort]);
 
   return (
-    <div className="flex flex-wrap mx-[40px]">
-      {filteredProducts.map((product) => (
+  <div className="flex flex-wrap mx-[40px]">
+    {filteredProducts
+      .slice(0, limit || filteredProducts.length)
+      .map((product) => (
         <Link to={`/product/${product._id}`} key={product._id}>
           <Product product={product} />
         </Link>
       ))}
-    </div>
-  );
+  </div>
+);
+
 };
 
 Products.propTypes = {
@@ -60,6 +63,7 @@ Products.propTypes = {
   filters: PropTypes.object,
   sort: PropTypes.string,
   query: PropTypes.string,
+  limit: PropTypes.number,
 };
 
 export default Products;

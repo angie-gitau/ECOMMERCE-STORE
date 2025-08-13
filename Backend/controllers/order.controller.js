@@ -45,14 +45,14 @@ const deleteOrder = asyncHandler(async (req, res) => {
 const getUserOrder = asyncHandler(async (req, res) => {
   const orders = await Order.find({ userId: req.params.id }).exec();
 
-  // Execute the query
   if (!orders || orders.length === 0) {
-    res.status(404);
-    throw new Error("No orders were found for this user.");
+    // return empty array (200) — frontend will show "No orders found" gracefully
+    return res.status(200).json([]);
   } else {
-    res.status(200).json(orders.reverse()); // Reverse the resulting array
+    return res.status(200).json(orders.reverse());
   }
 });
+
 
 //GET ALL ORDERS
 const getAllOrders = asyncHandler(async (req, res) => {
