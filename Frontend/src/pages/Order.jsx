@@ -152,7 +152,7 @@ const Order = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <button className="bg-orange-500 text-white p-3 rounded-lg font-semibold">
+          <button className="bg-[#f8bc00] text-white p-3 rounded-lg font-semibold">
             Continue Shopping
           </button>
         </div>
